@@ -120,11 +120,15 @@ df_life %>%
 
 df_life %>%
   group_by(Year) %>%
-   summarise(avg_BMI = mean(BMI, na.rm = TRUE),
+  summarise(avg_BMI = mean(BMI, na.rm = TRUE),
             sd_BMI = sd(BMI, na.rm = TRUE),
             avg_life_expectancy = mean(Life.expectancy, na.rm = TRUE),
             sd_life_expectancy = sd(Life.expectancy, na.rm = TRUE))
 
 # calculate averge GDP per country across all years
-# sort it aby the highest average GPD to lowest
+df_life %>%
+  group_by(Country) %>%
+  summarise(avg_GDP = mean(GDP, na.rm = TRUE)) %>%
+  arrange(-avg_GDP)
+
 
