@@ -50,3 +50,12 @@ df_example[is.na(as.numeric(df_example$height)), ]
 
 df_example <- read.table("data/loading-examples/example-missing.txt", sep=",",
                          header = TRUE, na.strings = c("missing", ""))
+
+# Read the data.xlsx file using the package readxl
+# install.packages("readxl")
+library(readxl)
+read_excel("data/loading-examples/data.xlsx")
+
+# Saving data ---------
+write.table(df_example, file = "data/saved.csv", sep = ";", row.names = FALSE)
+
