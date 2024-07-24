@@ -1,3 +1,4 @@
+"id";"favorite_color";"gender";"height";"salary";"hours_slept"
 1;"yellow";"female";155,293204291007;26614,4203960696;9
 2;"green";"female";151,344975713037;30403,0030003509;6
 3;"blue";"female";168,701852610832;28939,3561707967;8

@@ -149,4 +149,9 @@ df_arrests$assault_outlier
 df_arrests[df_arrests$assault_outlier == TRUE, ]
 df_arrests[df_arrests$assault_outlier, ]
 
-##
+## Pessos incomes
+
+df_pesos <- data.frame(income = sample(seq(10000, 100000, by = 5), 100, replace = TRUE),
+                       weights = sample(seq(100), 100, replace = TRUE))
+head(df_pesos)
+df_pesos$weighted_income <- df_pesos$income * df_pesos$weights/100
