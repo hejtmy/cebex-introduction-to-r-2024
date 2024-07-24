@@ -276,3 +276,52 @@ mean(is_smoking)
 
 5 + as.numeric("5")
 
+
+## List
+#
+name <- "Lukas"
+behav_score <- 45
+gender <- "male"
+age <- 34
+married <- TRUE
+
+name2 <- "Anna"
+behav_score2 <- 65
+gender2 <- "female"
+age2 <- 28
+married2 <- FALSE
+
+## Not good - creates a lot of variables
+
+participant1 <- list(name = "Lukas", behav_score = 45,
+                     gender = "male", age = 34, married = TRUE)
+
+participant2 <- list(name = "Anna", behav_score = 65,
+                     gender = "female", age = 28, married = FALSE)
+
+participant1$behav_score
+
+participant1[2]
+class(participant1)
+
+participant1[2] * 10
+participant1[2]$behav_score
+participant1[[2]]
+
+participant1[["name"]]
+
+# Create a list trial_1 - reaction time 240, money earned = 2, correct decision = TRUE
+trial_1 <- list(reaction_time = 240, money = 2, decision = TRUE)
+# Create a list trial_2 - reaction time 360, money earned = 1, correct decision = FALSE
+trial_1 <- list(reaction_time = 360, money = 1, decision = FALSE)
+
+## Adding fields
+trial_1[["good_trial"]] <- TRUE
+trial_1$was_helped <- FALSE
+
+# create a new field money_per_second in both trials
+trial_1$money_per_second <- trial_1$money/(trial_1$reaction_time/1000)
+
+# REMOVING FIELDS -----
+trial_1[["good_trial"]] <- NA
+trial_1$was_helped <- NULL
