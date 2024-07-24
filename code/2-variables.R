@@ -296,6 +296,7 @@ married2 <- FALSE
 participant1 <- list(name = "Lukas", behav_score = 45,
                      gender = "male", age = 34, married = TRUE)
 
+str(participant1)
 participant2 <- list(name = "Anna", behav_score = 65,
                      gender = "female", age = 28, married = FALSE)
 
