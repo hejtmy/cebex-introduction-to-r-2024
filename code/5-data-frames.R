@@ -80,18 +80,73 @@ top_10 <- quantile(df_arrests$Assault, 0.9)
 df_arrests[df_arrests$Assault > bottom_10 &
              df_arrests$Assault < top_10, ]
 
-
 ## find out the average Urban population of the top 10 states in Assault
 ## bottom 10 states in Assault
 
+?order
+order(df_arrests$Assault)
+df_arrests$Assault
+
+df_arrests_sorted <- df_arrests[order(-df_arrests$Assault), ]
+mean(head(df_arrests_sorted, 10))
+df_top <- head(df_arrests_sorted, 10)
+df_bottom <- tail(df_arrests_sorted, 10)
+mean(df_top$UrbanPop)
+
+head(df_arrests_sorted, 10)$UrbanPop
+head(df_arrests_sorted, 10)[["UrbanPop"]]
+df_arrests_sorted[seq(10), "UrbanPop"]
+
+mean(head(df_arrests_sorted, 10)$UrbanPop)
+
+top_bottom_10 <- rbind(df_top, df_bottom)
+mean(top_bottom_10$UrbanPop)
+
 ## Do you think, there is more Murder happening in
 # cities or in the countryside?
-
+mean(df_arrests[df_arrests$UrbanPop > median(df_arrests$UrbanPop), "Murder"])
+mean(df_arrests[df_arrests$UrbanPop < median(df_arrests$UrbanPop), "Murder"])
 
 ## Mutations
 # Remove the column RAPE from the data
+df_arrests$Rape <- NULL
 
 # Remove your favorite fake state (like Delaware) from the dataset
+# 'You cannot easilly remove rows, but you can not include them'
+# df_arrests["Delaware",] <- NULL # NOT WORKING, crashes
+rownames(df_arrests) == "Delaware"
+df_arrests[rownames(df_arrests) == "Delaware", ]
+df_arrests[rownames(df_arrests) != "Delaware", ]
 
-# Create a new colum city_state which is TRUE for states with
-# more than 75 percent Urban population
+# Create a new column city_state which is TRUE for states with
+# more than 75 percent Urban population and FALSE for the others
+df_arrests$city_state <- NULL
+df_arrests$city_state <- FALSE
+df_arrests$city_state[df_arrests$UrbanPop >= quantile(df_arrests$UrbanPop, 0.75)] <- TRUE
+df_arrests$city_state <- (df_arrests$UrbanPop >= quantile(df_arrests$UrbanPop, 0.75))
+
+# Create a column call us_state and set it to TRUE
+df_arrests$us_state <- TRUE
+
+# US state column in Ohio is false
+df_arrests[rownames(df_arrests) == "Ohio", "us_state"] <- FALSE
+df_arrests[rownames(df_arrests) == "Ohio", ]$us_state <- FALSE
+
+## Scale function
+a <- scale(df_arrests$UrbanPop)
+sd(df_arrests$UrbanPop)
+
+# create a column scaled_assault which has z scores for assault
+df_arrests$scaled_assault <- scale(df_arrests$Assault)
+
+# create a new column call assault_outlier which is true if the value is more than
+# 2 standard deviations away from the mean (z > 1.5, z < -1.5)
+df_arrests$assault_outlier <- df_arrests$scaled_assault > 1.5 | df_arrests$scaled_assault < -1.5
+df_arrests$assault_outlier <- abs(df_arrests$scaled_assault) > 1.5
+
+table(df_arrests$assault_outlier)
+df_arrests$assault_outlier
+df_arrests[df_arrests$assault_outlier == TRUE, ]
+df_arrests[df_arrests$assault_outlier, ]
+
+##
