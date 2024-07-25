@@ -1,7 +1,11 @@
+library(dplyr)
+library(ggplot2)
+
 readLines("data/movies_metadata.csv", 5)
 
 df_movies <- read.csv("data/movies_metadata.csv")
 ?sample_n
+
 set.seed(52)
 df_movies <- df_movies %>% sample_n(10000)
 df_movies <- df_movies %>%
@@ -52,7 +56,8 @@ df_movies %>%
 ## plot histogram revenues for movies which cost less then 100 mil
 df_movies %>%
   filter(budget < 100000000) %>%
-  ggplot(aes(x = revenue)) + geom_histogram()
+  ggplot(aes(x = revenue)) +
+    geom_histogram()
 
 ## plot histogram revenues for movies costing more than 100 mil
 df_movies %>%
@@ -113,7 +118,7 @@ ggplot(df_movies, aes(vote_average)) +
 select(df_movies, vote_count, vote_average)
 
 ggplot(df_movies, aes(vote_count)) +
-  geom_histogram() +
+  geom_histogram(color = "red", fill = "blue") +
   xlim(0, 1000)
 
 ## remove values that should nto be there before deciding
@@ -207,13 +212,35 @@ ggsave("example_plot.png", p1)
 ## Practice tasks
 
 # plot boxplots comparing runtimes of all movies based on original language
+df_movies %>%
+  ggplot(aes(original_language, runtime, fill = original_language)) +
+    geom_boxplot() +
+    guides(fill = "none")
 
 # plot boxplots comparing runtimes of french and spanish movies
+df_movies %>%
+  filter(original_language %in% c("fr", "es")) %>%
+  ggplot(aes(original_language, runtime,fill = original_language)) +
+  geom_violin(alpha = 0.2, width = 0.5) +
+  geom_boxplot(width = 0.25) +
+  geom_jitter(width = 0.1) +
+  guides(fill = "none")
+
 # add violin plot to it and potentialy jitter as well (set alpha and color as
 # you want)
 
 
 # what is the relationship between revenue and vote_count?
+ggplot(df_movies, aes(vote_count, revenue, color = vote_average > 7)) +
+  geom_point() +
+  geom_smooth(method = "lm")
 # plot the scatter plot and color it based on vote average above and below 7
 
+# plot a scatter plot of df_movies with vote average being on Y and
+# budget being on X. Color it by original_language
+df_movies %>%
+  filter(original_language %in% common_language) %>%
+  ggplot(aes(budget, vote_average, color = original_language)) +
+    geom_point() +
+    geom_smooth(method = "lm")
 
