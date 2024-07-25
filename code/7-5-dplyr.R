@@ -108,7 +108,6 @@ table(df_life$Year, df_life$Status)
 df_life %>%
   count(Year, Status)
 
-
 df_life %>%
   count(Year, Status, obese = BMI > 28) %>%
   filter(obese)
