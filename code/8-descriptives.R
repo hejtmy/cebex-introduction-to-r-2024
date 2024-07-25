@@ -72,5 +72,4 @@ df_life_good <- df_life %>%
 # Descriptives ---------
 # Using df_life_good, calculate average, and sd and median for Total expenditure,
 # Life expectancy and BMI for each country
-df_life_good %>%
 

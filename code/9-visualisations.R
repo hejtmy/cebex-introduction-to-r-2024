@@ -136,10 +136,84 @@ df_movies %>%
 
 ## Create a scatter plot of vote_average and runtime
 # Color it by vote_count > 100
-# Add regression line
+df_movies %>%
+  mutate(voted100 = vote_count > 100) %>%
+  ggplot(aes(x=runtime, y=vote_average, color = voted100)) +
+    geom_point() +
+    geom_smooth(method="lm")
 
-# Create a budget revenue scatter plot
+df_movies %>%
+  ggplot(aes(x=runtime, y=vote_average, color = (vote_count > 100))) +
+  geom_point() +
+  geom_smooth(method="lm")
+
+# Create a budget revenue scatter plot ------
+df_movies %>%
+  ggplot(aes(budget, revenue, color = original_language)) +
+    geom_point() +
+    geom_smooth(method = "lm")
+
 # color it by original language
+table(df_movies$original_language)
 
-# remove languanges that appear less than 10 times
+# remove language that appear less than 10 times
+common_language <- count(df_movies, original_language) %>%
+  filter(n > 10) %>%
+  pull(original_language)
+
+df_movies %>%
+  filter(original_language %in% common_language) %>%
+  ggplot(aes(budget, revenue, color = original_language)) +
+    geom_point() +
+    geom_smooth(method = "lm")
+
+## Facet wrap ----------------
+
+df_movies %>%
+  filter(original_language %in% common_language) %>%
+  ggplot(aes(budget, revenue, color = original_language)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  facet_wrap(~original_language, scales = "free")
+
+## Boxplots -----
+df_movies %>%
+  filter(!is.na(runtime),
+         revenue > 10000) %>%
+  mutate(long = runtime > 150) %>%
+  ggplot(aes(x = long, y = revenue)) +
+    geom_boxplot()
+
+df_movies %>%
+  filter(!is.na(runtime),
+         vote_count > 100) %>%
+  mutate(long = runtime > 150) %>%
+  ggplot(aes(x = long, y = vote_average)) +
+    geom_boxplot()
+
+p1 <- df_movies %>%
+  filter(!is.na(runtime),
+         vote_count > 100) %>%
+  mutate(long = runtime > 150) %>%
+  ggplot(aes(x = long, y = vote_average)) +
+    geom_violin() +
+    geom_boxplot(width = 0.25) +
+    geom_jitter(width = 0.15, alpha = 0.1)
+
+## Saving plot automatically
+
+ggsave("example_plot.png", p1)
+
+## Practice tasks
+
+# plot boxplots comparing runtimes of all movies based on original language
+
+# plot boxplots comparing runtimes of french and spanish movies
+# add violin plot to it and potentialy jitter as well (set alpha and color as
+# you want)
+
+
+# what is the relationship between revenue and vote_count?
+# plot the scatter plot and color it based on vote average above and below 7
+
 
